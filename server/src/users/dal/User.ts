@@ -1,7 +1,7 @@
 import mongoose, {Schema, Document, Model, DocumentQuery} from "mongoose";
 import bcrypt from 'bcryptjs';
-import {I_authMongooseUserData, I_userFullInfoData} from "../../../../../core/users-types";
-import {ENV_URL} from "../../../config";
+import {I_authMongooseUserData, I_userFullInfoData} from "../../../../core/users-types";
+import {ENV_URL} from "../../config";
 mongoose.Promise = global.Promise;
 
 export interface I_mongooseUserModel extends I_userFullInfoData, Document {

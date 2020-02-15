@@ -1,5 +1,5 @@
 import mongoose, {DocumentQuery} from "mongoose";
-import User, {I_mongooseUserModel} from './models/User';
+import User, {I_mongooseUserModel} from './User';
 import { I_authMongooseUserData, I_userFullInfoData } from "../../../../core/users-types";
 import {ENV_URL} from "../../config";
 

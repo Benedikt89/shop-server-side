@@ -3,7 +3,7 @@ import express, {NextFunction, Request, Response} from "express";
 import checkAuthUser from "./middleware/user-password-check";
 import checkAuthToken from "./middleware/check-auth-token";
 const router = express.Router();
-import {upload} from "./dal/ImageHolder";
+import {upload} from "../common/ImageHolder";
 import * as fs from "fs";
 import {rootPath} from "../config";
 
