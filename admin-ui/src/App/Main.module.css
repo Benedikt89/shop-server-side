@@ -1,0 +1,61 @@
+.container
+{
+    composes: container from './../App.css';
+}
+
+.mainWrapper
+{
+    display: flex;
+    flex-direction: column;
+
+    min-height: 120vh;
+    margin-top: 2rem;
+}
+
+.warning
+{
+    composes: warning from './../App.css';
+}
+
+.row
+{
+    composes: row from './../App.css';
+}
+
+.popUpWrapper
+{
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 10rem;
+    min-height: 5rem;
+    margin-left: -80px;
+    padding: 2%;
+
+    transition: all 5s ease-in-out;
+
+    color: red;
+    border: 1px solid red;
+    border-radius: 5%;
+    background-color: black;
+}
+
+.popUpWrapper ::after
+{
+    position: absolute;
+    top: 100%;
+    left: 50%;
+
+    margin-left: -5px;
+
+    content: '';
+
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}

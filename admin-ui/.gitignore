@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .idea
+auth_config.json
+loginConfig.ts
 
 # dependencies
 /node_modules

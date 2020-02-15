@@ -1,17 +1,29 @@
-
-export interface I_contactCommonData {
-    firstName:string,
-    lastName: string,
-    address: string,
-    city: string,
-    region: string,
-    country: string,
-    postalCode: string,
+export interface I_orderFormData {
     phone: string,
-    email: string,
-    age: number
+    first_name: string,
+    "delivery_date": string,
+    "delivery_time": string,
+    "address": string,
+    "comment": string,
+    "payment": string,
+}
+export interface I_postOrderItem {
+    pizza: string,
+    quantity: number,
 }
 
-export interface I_mongooseContactData extends I_contactCommonData{
+export interface I_orderCommon extends I_orderFormData{
+    "order_items": Array<I_postOrderItem>
+}
+
+export interface I_orderInternalItem {
     id: string,
+    orderData: I_orderFormData
+    order_items: Array<I_postOrderItem>
+    createdAt: Date
+}
+
+export interface I_orderDates {
+    "month": number,
+    "work_dates": {"date": string}[]
 }
