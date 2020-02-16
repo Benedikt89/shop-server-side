@@ -17,7 +17,7 @@ const OrderRaw: React.FC<I_props> = ({order, openMap, editOrder, deleteSelectedO
             <td>{order.address}</td>
             <td>{order.delivery_date}</td>
             <td>{order.delivery_time}</td>
-            <td>{order.createdAt.toDateString()}</td>
+            <td>{order.createdAt}</td>
             <td>{order.checked}</td>
             <td>{order.delivered}</td>
             <td>{order.payment}</td>
@@ -39,10 +39,11 @@ const OrderRaw: React.FC<I_props> = ({order, openMap, editOrder, deleteSelectedO
             </td>
             <td>
                 <Button
-                    variant="outline-primary"
+                    variant="outline-danger"
+                    size='sm'
                     onClick={ () => {deleteSelectedOrder(order.id)} }
                 >
-                    Delete
+                    X
                 </Button>
             </td>
         </tr>

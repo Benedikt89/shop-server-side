@@ -11,14 +11,14 @@ export interface I_mongooseOrderModel extends I_orderInternalItem, Document {
 const orderSchema: Schema = new Schema({
     phone: {type: String, required: true},
     first_name: {type: String, required: true},
-    delivery_date: {type: Date, required: true},
+    delivery_date: {type: String, required: true},
     delivery_time: {type: Number, required: true},
     address: {type: String, required: true},
     comment: {type: String, required: true},
     payment: {type: Number, required: true},
-    createdAt: {type: Date, required: true},
+    createdAt: {type: Date},
     checked: {type: String},
-    delivered: {type: Date, required: true},
+    delivered: {type: Date},
     order_items: {type: Array, required: true},
     __v: {type: Number, select: false}
 });
@@ -51,7 +51,7 @@ orderSchema.methods.toClient = function(): I_orderInternalItem {
 orderSchema.pre<I_mongooseOrderModel>('save', function (next: any) {
     let now = new Date();
     if (!this.createdAt) {
-        this.createdAt = now;
+        this.createdAt = now.toDateString();
     }
     next();
 });

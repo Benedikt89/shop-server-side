@@ -18,7 +18,7 @@ export interface I_orderCommon extends I_orderFormData{
 
 export interface I_orderInternalItem extends I_orderCommon{
     id: string,
-    createdAt: Date
+    createdAt: string
     checked: null | string
     delivered: null | Date
 }

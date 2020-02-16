@@ -29,7 +29,8 @@ export const getOrders = () => async (dispatch: ThunkDispatch<{}, {}, AppActions
 };
 export const addOrder = (data: I_orderCommon) => async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
     try {
-        let response = await ordersRequests.addOrder(data);
+        const sedData:I_orderCommon = {...data, order_items:[{pizza: 'asd', quantity: 2}]};
+        let response = await ordersRequests.addOrder(sedData);
         console.log(JSON.parse(JSON.stringify(response)));
         dispatch(getOrders);
     } catch (err) {

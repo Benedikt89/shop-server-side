@@ -77,8 +77,8 @@ const OrdersPage:React.FC<I_OrdersProps> = ({orders, getOrders, deleteOrder, add
     let randomData:I_orderCommon = {
         phone: `${getRandom()}`,
         first_name: `string${getRandom()}`,
-        delivery_time: `string${getRandom()}`,
-        delivery_date: `Minsk`,
+        delivery_time: `2`,
+        delivery_date: `22-03-2020`,
         address: `Belarus, Minsk`,
         comment: `Minsk`,
         payment: `0`,
@@ -153,14 +153,14 @@ const OrdersPage:React.FC<I_OrdersProps> = ({orders, getOrders, deleteOrder, add
                 <thead>
                 <tr>
                     <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>Country</th>
-                    <th>Postal Code</th>
                     <th>Phone</th>
-                    <th>Email</th>
-                    <th>Age</th>
+                    <th>Address</th>
+                    <th>delivery_date</th>
+                    <th>delivery_time</th>
+                    <th>createdAt</th>
+                    <th>checked</th>
+                    <th>delivered</th>
+                    <th>payment</th>
                     <th>Map</th>
                     <th>Edit</th>
                     <th>Delete</th>

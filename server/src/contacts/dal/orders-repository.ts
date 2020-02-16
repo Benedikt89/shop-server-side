@@ -6,14 +6,9 @@ export const ordersRepository = {
     async addOrder(order: I_orderCommon): Promise<I_orderInternalItem | never> {
         try {
             const newOrder = await new Order({
-                first_name: order.first_name,
-                phone: order.phone,
-                address: order.address,
-                delivery_date: order.delivery_date,
-                delivery_time: order.delivery_time,
-                comment: order.comment,
-                payment: order.payment,
-                order_items: order.order_items
+                ...order,
+                checked: null,
+                delivered: null,
             }).save();
             return new Promise(((resolve, reject) => resolve
             (newOrder.getFullData())))

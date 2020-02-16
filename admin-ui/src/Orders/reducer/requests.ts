@@ -1,9 +1,9 @@
 import axios, {AxiosResponse} from "axios";
 import { APIerrorLogger } from "../../utils/errorLogger";
 import {GOOGLE_API_KEY} from "../../loginConfig";
-import {I_orderFormData, I_orderInternalItem} from "../../../../core/orders-types";
+import {I_orderCommon, I_orderFormData, I_orderInternalItem} from "../../../../core/orders-types";
 
-const APIURL = "http://localhost:8000/api/orders/";
+const APIURL = "http://localhost:8000/api/orders";
 const MAPURL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
 
@@ -14,7 +14,7 @@ export const ordersRequests = {
             return res.data;
         })
     },
-    async addOrder(data: I_orderFormData) {
+    async addOrder(data: I_orderCommon) {
         try {
             let res: AxiosResponse<any | { error: string } | any> = await axios.post(`${APIURL}/create`, data);
             return res.data;

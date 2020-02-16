@@ -1,5 +1,6 @@
 import {ordersRepository} from "./dal/orders-repository";
 import express, {NextFunction, Request, Response} from "express";
+import {I_orderCommon, I_orderFormData} from "../../../core/orders-types";
 const router = express.Router();
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +16,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 router.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const order = req.body;
+        const order:I_orderCommon = req.body;
         await ordersRepository.addOrder(order);
         return res.status(201).json({
             message: 'Created Successful'

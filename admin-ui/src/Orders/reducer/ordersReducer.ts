@@ -17,7 +17,7 @@ const initialState:I_ordersState = {
             delivered: null,
             delivery_time: '4',
             delivery_date: '22-22-2020',
-            createdAt: new Date(),
+            createdAt: '22-22-2020',
             order_items: []
         }
     ],
