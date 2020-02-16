@@ -14,7 +14,7 @@ const LoginPage: React.FC = ({loginUserThunk}: any) => {
     };
 
     return (
-        <div className="container">
+        <div className="container w-25">
             <h2>Authorization page</h2>
             <LoginForm onSubmit={onSubmit} message={'LOGIN'}/>
             <Link to={"/forgotPassword"}>

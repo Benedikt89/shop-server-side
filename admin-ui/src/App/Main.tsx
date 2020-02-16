@@ -8,7 +8,7 @@ import {getAppError, getIsFetching} from "./reducer/selectors";
 import Preloader from "../Common/Preloader";
 import {connect} from "react-redux";
 import {Redirect, Route, RouteComponentProps, Switch, withRouter} from "react-router";
-import Loginization from "../Login/components/Login";
+import LoginPage from "../Login/components/Login";
 import ProfilePage from "../Profile/ProfilePage";
 import RecoverPassword from "../Login/components/RecoverPasswordPage";
 import {withErrorBoundary} from "../Common/ErrorBoundary";
@@ -64,8 +64,8 @@ class Main extends Component<I_MainProps> {
                         :
                         <Switch>
                             <Route exact path="/"
-                                   render={() => <Redirect to={"/register"}/>}/>
-                            <Route path="/login" render={() => <Loginization/>}/>
+                                   render={() => <Redirect to={"/orders"}/>}/>
+                            <Route path="/login" render={() => <LoginPage/>}/>
                             <Route path="/orders" render={() => <OrdersPage/>}/>
                             <Route path="/profile" render={() =>
                                 <ErrorMessageWithErrorBoundary>

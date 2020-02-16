@@ -1,16 +1,16 @@
-import {I_order, I_formOrder} from "../orders-types";
 import {ThunkDispatch} from "redux-thunk";
 import {AppActionsType, AppStateType} from "../../redux/store";
 import {ordersRequests} from "./requests";
+import {I_orderCommon, I_orderInternalItem} from "../../../../core/orders-types";
 
 export const SET_ORDERS = 'orders/SET_ORDERS';
 
 type GetStateType = () => AppStateType
 interface I_setOrders {
     type: typeof SET_ORDERS,
-    payload: Array<I_order>
+    payload: Array<I_orderInternalItem>
 }
-export const setOrders = (orders: Array<I_order>):I_setOrders => {
+export const setOrders = (orders: Array<I_orderInternalItem>):I_setOrders => {
     return {
         type: SET_ORDERS,
         payload: orders
@@ -19,13 +19,15 @@ export const setOrders = (orders: Array<I_order>):I_setOrders => {
 
 export const getOrders = () => async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
     try {
-        let response = await ordersRequests.getOrders();
-        dispatch(setOrders(response));
+        let response:Array<I_orderInternalItem> = await ordersRequests.getOrders();
+        if (response.length > 0) {
+            dispatch(setOrders(response));
+        }
     } catch (err) {
         console.log(JSON.parse(JSON.stringify(err)));
     }
 };
-export const addOrder = (data: I_formOrder) => async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
+export const addOrder = (data: I_orderCommon) => async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
     try {
         let response = await ordersRequests.addOrder(data);
         console.log(JSON.parse(JSON.stringify(response)));
@@ -35,7 +37,7 @@ export const addOrder = (data: I_formOrder) => async (dispatch: ThunkDispatch<{}
         console.log(JSON.parse(JSON.stringify(err)));
     }
 };
-export const editOrder = (data: I_order) => async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
+export const editOrder = (data: I_orderInternalItem) => async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
     try {
         let response = await ordersRequests.editOrder(data);
         console.log(JSON.parse(JSON.stringify(response)));

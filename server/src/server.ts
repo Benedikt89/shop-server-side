@@ -10,7 +10,7 @@ import path from 'path';
 // setup routers
 import {imagesPath, staticPath} from "./config";
 import users from "./users/users-router";
-import contacts from "./contacts/contacts-router";
+import orders from "./contacts/orders-router";
 
 //Database connections
 mongoose.connect('mongodb://localhost/productShop', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -52,7 +52,7 @@ app.disable("x-powered-by");
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', users);
-app.use('/api/contacts', contacts);
+app.use('/api/orders', orders);
 
 //local Static Files
 app.use('/public', express.static(staticPath));

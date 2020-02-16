@@ -1,23 +1,24 @@
 import {I_ordersActions, SET_ORDERS} from './actions';
-import {I_order} from "../orders-types";
+import {I_orderInternalItem} from "../../../../core/orders-types";
 
 interface I_ordersState {
-    orders:Array<I_order>
+    orders:Array<I_orderInternalItem>
 }
 const initialState:I_ordersState = {
     orders: [
         {
             id: 'asdasd3w2effq2343qr',
-            firstName: 'asda',
-            lastName: 'sss',
+            first_name: 'asda',
             address: 'Minsk',
-            city: 'Minsk',
-            region: 'Minsk',
-            country: 'Belarus',
-            postalCode: '220111',
             phone: '123123123',
-            email: '123123@tut.by',
-            age: +'22'
+            payment: '0',
+            comment: 'asd',
+            checked: null,
+            delivered: null,
+            delivery_time: '4',
+            delivery_date: '22-22-2020',
+            createdAt: new Date(),
+            order_items: []
         }
     ],
 };

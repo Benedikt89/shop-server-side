@@ -3,28 +3,16 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import * as yup from 'yup';
 import {COUNTRIES} from '../reducer/exports';
-import {I_order, I_formOrder} from "../orders-types";
 import {withFormik, FormikProps, FormikErrors, InjectedFormikProps} from 'formik';
 import FormWrapper from "../../Common/FormWrapper";
+import {I_orderInternalItem} from "../../../../core/orders-types";
+import {CreateField} from "../../Common/CreateField";
+
+const TIMES = ['10-11', "11-12", "12-13", '13-14'];
+const PAYMENTS = ['cash', "card", "online"];
 
 const schema = yup.object({
-    firstName: yup.string().required('First name is required'),
-    lastName: yup.string().required('Last name is required'),
-    address: yup.string().required('Address is required'),
-    city: yup.string().required('City is required'),
-    region: yup.string().required('Region is required'),
-    country: yup.string().required('Country is required').default('Afghanistan'),
-    postalCode: yup
-        .string()
-        .when('country', {
-            is: 'United States',
-            then: yup.string().matches(/^[0-9]{5}(?:-[0-9]{4})?$/, 'Invalid postal code'),
-        })
-        .when('country', {
-            is: 'Canada',
-            then: yup.string().matches(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/, 'Invalid postal code'),
-        })
-        .required(),
+    first_name: yup.string().required('First name is required'),
     phone: yup
         .string()
         .when('country', {
@@ -32,11 +20,13 @@ const schema = yup.object({
             then: yup.string().matches(/^[2-9]\d{2}[2-9]\d{2}\d{4}$/, 'Invalid phone nunber')
         })
         .required(),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    age: yup.number()
-        .required('Age is required')
-        .min(0, 'Minimum age is 0')
-        .max(200, 'Maximum age is 200'),
+    address: yup.string().required('Address is required'),
+    delivery_date: yup.string().required('City is required'),
+    delivery_time: yup.string().required('Region is required'),
+    comment: yup.string().required('Country is required').default('Belarus'),
+    payment: yup.string().required('Country is required').default('Afghanistan'),
+    checked: yup.boolean().required(),
+    delivered: yup.date()
 });
 
 interface I_formOutherProps {
@@ -44,7 +34,7 @@ interface I_formOutherProps {
     onCancel: () => void,
 }
 
-const InnerForm: React.SFC<InjectedFormikProps<I_formOutherProps, I_formOrder>> = (props) => {
+const InnerForm: React.SFC<InjectedFormikProps<I_formOutherProps, I_formValues>> = (props) => {
     const {
         edit,
         onCancel,
@@ -54,113 +44,77 @@ const InnerForm: React.SFC<InjectedFormikProps<I_formOutherProps, I_formOrder>> 
         touched,
         errors
     } = props;
+    let meta = {handleChange, values, touched, errors};
+
     return (
         <div className="form">
             <Form noValidate onSubmit={handleSubmit}>
                 <Form.Row>
-                    <FormWrapper name={'firstName'} error={errors.firstName} label={'First name'} key={"firstName"}>
-                        <Form.Control
-                            type="text"
-                            name="firstName"
-                            placeholder="First Name"
-                            value={values.firstName || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.firstName && errors.firstName)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'lastName'} error={errors.lastName} label={'Last name'} key={"lastName"}>
-                        <Form.Control
-                            type="text"
-                            name="lastName"
-                            placeholder="Last Name"
-                            value={values.lastName || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.firstName && errors.lastName)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'address'} error={errors.address} label={'Last name'} key={"address"}>
-                        <Form.Control
-                            type="text"
-                            placeholder="address"
-                            aria-describedby="inputGroupPrepend"
-                            name="address"
-                            value={values.address || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.address && errors.address)}
-                        />
-                    </FormWrapper>
+                    <CreateField
+                        label={"First Name"}
+                        name={'first_name'}
+                        type={"text"}
+                        meta={meta}
+                    />
+                    <CreateField
+                        label={"Phone"}
+                        name={'phone'}
+                        type={"text"}
+                        meta={meta}
+                    />
+                    <CreateField
+                        label={"Address"}
+                        name={'address'}
+                        type={"text"}
+                        meta={meta}
+                    />
+                    <CreateField
+                        label={"Checked"}
+                        name={'checked'}
+                        type={"checkbox"}
+                        meta={meta}
+                    />
                 </Form.Row>
                 <Form.Row>
-                    <FormWrapper name={'city'} error={errors.city} label={'City'} key={"city"}>
-                        <Form.Control
-                            type="text"
-                            placeholder="City"
-                            name="city"
-                            value={values.city || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.city && errors.city)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'region'} error={errors.region} label={'Region'} key={"region"}>
-                        <Form.Control
-                            type="text"
-                            placeholder="Region"
-                            name="region"
-                            value={values.region || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.region && errors.region)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'country'} error={errors.country} label={'Country'} key={"country"}>
+                    <CreateField
+                        label={"Delivery date"}
+                        name={'delivery_date'}
+                        type={"text"}
+                        meta={meta}
+                    />
+                    <FormWrapper name={'delivery_time'} error={errors.delivery_time} label={'Delivery Time'} key={"delivery_time"}>
                         <Form.Control
                             as="select"
-                            placeholder="Country"
-                            name="country"
+                            placeholder="Delivery Time"
+                            name="delivery_time"
                             onChange={handleChange}
-                            value={values.country || ''}
-                            isInvalid={!!(touched.region && errors.country)}>
-                            {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                            value={values.delivery_time || ''}
+                            isInvalid={!!(touched.delivery_time && errors.delivery_time)}>
+                            {TIMES.map((t, i) => <option key={t} value={i}>{t}</option>)}
                         </Form.Control>
                     </FormWrapper>
-                    <FormWrapper name={'postalCode'} error={errors.postalCode} label={'Postal Code'} key={"postalCode"}>
+                    <CreateField
+                        label={"delivered"}
+                        name={'delivered'}
+                        type={"date"}
+                        meta={meta}
+                    />
+                    <CreateField
+                        label={"Comment"}
+                        name={'comment'}
+                        type={"text"}
+                        meta={meta}
+                    />
+                    <FormWrapper name={'payment'} error={errors.payment} label={'payment'} key={"payment"}>
                         <Form.Control
-                            type="text"
-                            placeholder="Postal Code"
-                            name="postalCode"
-                            value={values.postalCode || ''}
+                            as="select"
+                            placeholder="payment"
+                            name="payment"
                             onChange={handleChange}
-                            isInvalid={!!(touched.postalCode && errors.postalCode)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'phone'} error={errors.phone} label={'phone'} key={"phone"}>
-                        <Form.Control
-                            type="text"
-                            placeholder="Phone"
-                            name="phone"
-                            value={values.phone || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.phone && errors.phone)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'email'} error={errors.email} label={'email'} key={"email"}>
-                        <Form.Control
-                            type="text"
-                            placeholder="Email"
-                            name="email"
-                            value={values.email || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.email && errors.email)}
-                        />
-                    </FormWrapper>
-                    <FormWrapper name={'age'} error={errors.age} label={'age'} key={"age"}>
-                        <Form.Control
-                            type="text"
-                            placeholder="Age"
-                            name="age"
-                            value={`${values.age}` || ''}
-                            onChange={handleChange}
-                            isInvalid={!!(touched.age && errors.age)}
-                        />
+                            value={values.payment || ''}
+                            isInvalid={!!(touched.payment && errors.payment)}>
+                            {PAYMENTS.map((p, i) => <option key={p} value={i}>{p}</option>)}
+                        </Form.Control>
                     </FormWrapper>
                 </Form.Row>
                 <Button type="submit" style={{'marginRight': '10px'}}>Save</Button>
@@ -172,45 +126,53 @@ const InnerForm: React.SFC<InjectedFormikProps<I_formOutherProps, I_formOrder>> 
 
 interface I_Props {
     onSave: () => void,
-    addOrder: (values: I_formOrder) => void,
-    order?: I_order,
+    addOrder: (values: I_orderInternalItem) => void,
+    order: I_orderInternalItem,
 }
-
+interface I_formValues {
+    first_name: string,
+    phone: string,
+    address: string,
+    delivery_time: string,
+    delivery_date: string,
+    comment: string,
+    payment: string,
+    checked: string,
+    delivered: string,
+}
 type I_Allprops = I_Props & I_formOutherProps
 
 // Wrap our form with the withFormik HoC
-const OrderForm = withFormik<I_Allprops, I_formOrder>({
+const OrderForm = withFormik<I_Allprops, I_formValues>({
     // Transform outer props into form values
     mapPropsToValues: ({order}: I_Allprops) => {
         const initialValues = {
-            firstName: '',
-            lastName: '',
-            address: '',
-            city: '',
-            region: '',
-            country: '',
-            postalCode: '',
+            first_name: '',
             phone: '',
-            email: '',
-            age: +''
+            address: '',
+            delivery_time: '',
+            delivery_date: '',
+            comment: '',
+            payment: '',
+            checked: '',
+            delivered: '',
         };
         if (order !== undefined) {
             return {
-                firstName: order.firstName,
-                lastName: order.lastName,
-                address: order.address,
-                city: order.city,
-                region: order.region,
-                country: order.country,
-                postalCode: order.postalCode,
+                first_name: order.first_name,
                 phone: order.phone,
-                email: order.email,
-                age: order.age
+                address: order.address,
+                delivery_time: order.delivery_time,
+                delivery_date: order.delivery_date,
+                comment: order.comment,
+                payment: order.payment,
+                checked: order.checked !== null ? order.checked : '',
+                delivered: order.delivered !== null ? order.delivered.toDateString() : '',
             }
         } else return initialValues
     },
     handleSubmit: async (
-        values: I_formOrder,
+        values: I_formValues,
         {props, setSubmitting, setErrors}
     ) => {
         let {addOrder, onSave, edit} = props;
@@ -218,10 +180,13 @@ const OrderForm = withFormik<I_Allprops, I_formOrder>({
         if (!isValid) {
             return;
         }
-        if (!edit) {
-            await addOrder(values);
-        } else {
-            await addOrder({...values});
+        if (edit) {
+            await addOrder({
+                ...props.order,
+                ...values,
+
+                delivered: null
+            });
         }
         onSave();
         console.log(values);

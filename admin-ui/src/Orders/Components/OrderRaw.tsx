@@ -1,26 +1,26 @@
 import React from "react";
-import {I_order} from "../orders-types";
 import Button from "react-bootstrap/Button";
+import {I_orderInternalItem} from "../../../../core/orders-types";
 
 interface I_props {
-    order: I_order,
-    openMap: (order: I_order) => void,
-    editOrder: (order: I_order) => void,
+    order: I_orderInternalItem,
+    openMap: (order: I_orderInternalItem) => void,
+    editOrder: (order: I_orderInternalItem) => void,
     deleteSelectedOrder: (id: string) => void,
 }
 const OrderRaw: React.FC<I_props> = ({order, openMap, editOrder, deleteSelectedOrder}) => {
 
     return (
         <tr key={order.id}>
-            <td>{order.firstName}</td>
-            <td>{order.lastName}</td>
-            <td>{order.address}</td>
-            <td>{order.city}</td>
-            <td>{order.country}</td>
-            <td>{order.postalCode}</td>
+            <td>{order.first_name}</td>
             <td>{order.phone}</td>
-            <td>{order.email}</td>
-            <td>{order.age}</td>
+            <td>{order.address}</td>
+            <td>{order.delivery_date}</td>
+            <td>{order.delivery_time}</td>
+            <td>{order.createdAt.toDateString()}</td>
+            <td>{order.checked}</td>
+            <td>{order.delivered}</td>
+            <td>{order.payment}</td>
             <td>
                 <Button
                     variant="outline-primary"

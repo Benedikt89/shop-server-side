@@ -8,19 +8,19 @@ import "../../App.css";
 import MapComponent from "./MapComponent";
 import {connect} from "react-redux";
 import { getLatLng } from "../reducer/requests";
-import {I_order, I_formOrder} from "../orders-types";
 import { deleteOrder, getOrders, addOrder, editOrder } from "../reducer/actions";
 import {AppStateType} from "../../redux/store";
 import OrderRaw from "./OrderRaw";
+import {I_orderCommon, I_orderInternalItem} from "../../../../core/orders-types";
 
 interface I_connectedProps {
-    orders: Array<I_order> | []
+    orders: Array<I_orderInternalItem> | []
 }
 interface I_dispatchedProps {
     deleteOrder: (id: string) => void,
     getOrders: () => void,
-    addOrder: (order: I_formOrder) => void,
-    editOrder: (order: I_order) => void
+    addOrder: (order: I_orderCommon) => void,
+    editOrder: (order: I_orderInternalItem) => void
 }
 interface I_OrdersProps extends I_connectedProps, I_dispatchedProps {}
 
@@ -47,7 +47,7 @@ const OrdersPage:React.FC<I_OrdersProps> = ({orders, getOrders, deleteOrder, add
     const cancelAddModal = () => {
         setOpenAddModal(false);
     };
-    const editModeOrder = (order: I_order) => {
+    const editModeOrder = (order: I_orderInternalItem) => {
         setSelectedOrder(order);
         setOpenEditModal(true);
     };
@@ -62,9 +62,9 @@ const OrdersPage:React.FC<I_OrdersProps> = ({orders, getOrders, deleteOrder, add
         deleteOrder(id);
     };
 
-    const openMap = async (order: I_order) => {
+    const openMap = async (order: I_orderInternalItem) => {
         try {
-            const address = `${order.city}, ${order.country}`;
+            const address = `${order.address}`;
             const response = await getLatLng(address);
             const loc = response.data.results[0].geometry.location;
             setLoc(loc);
@@ -74,17 +74,15 @@ const OrdersPage:React.FC<I_OrdersProps> = ({orders, getOrders, deleteOrder, add
         }
     };
     let getRandom = () => Math.floor(Math.random() * 105);
-    let randomData = {
-        firstName: `string${getRandom()}`,
-        lastName: `string${getRandom()}`,
-        address: `Minsk`,
-        city: `Minsk`,
-        region: `Minsk`,
-        country: `Belarus`,
-        postalCode: `220000`,
+    let randomData:I_orderCommon = {
         phone: `${getRandom()}`,
-        email: `string${getRandom()}@tut.by`,
-        age: 22
+        first_name: `string${getRandom()}`,
+        delivery_time: `string${getRandom()}`,
+        delivery_date: `Minsk`,
+        address: `Belarus, Minsk`,
+        comment: `Minsk`,
+        payment: `0`,
+        order_items: [{ pizza: 'string', quantity: 2}]
     };
     const addRandom = () => {
         addOrder(randomData);
@@ -118,6 +116,7 @@ const OrdersPage:React.FC<I_OrdersProps> = ({orders, getOrders, deleteOrder, add
                         onSave={closeModal}
                         onCancel={cancelAddModal}
                         addOrder={(c) => {addOrder(c)}}
+                        order={orders[0]}
                     />
                 </Modal.Body>
             </Modal>

@@ -1,20 +1,20 @@
-import {I_order, I_formOrder} from "../orders-types";
 import axios, {AxiosResponse} from "axios";
 import { APIerrorLogger } from "../../utils/errorLogger";
 import {GOOGLE_API_KEY} from "../../loginConfig";
+import {I_orderFormData, I_orderInternalItem} from "../../../../core/orders-types";
 
 const APIURL = "http://localhost:8000/api/orders/";
 const MAPURL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
 
 export const ordersRequests = {
-    getOrders(): Promise<Array<I_order> | never> {
+    getOrders(): Promise<Array<I_orderInternalItem> | never> {
         return  axios.get(`${APIURL}`)
             .then((res) => {
             return res.data;
         })
     },
-    async addOrder(data: I_formOrder) {
+    async addOrder(data: I_orderFormData) {
         try {
             let res: AxiosResponse<any | { error: string } | any> = await axios.post(`${APIURL}/create`, data);
             return res.data;
@@ -24,7 +24,7 @@ export const ordersRequests = {
             throw err
         }
     },
-    editOrder: (data: I_order) =>
+    editOrder: (data: I_orderFormData) =>
         axios.put(`${APIURL}`, data),
     deleteOrder: (id: string) => axios.delete(`${APIURL}/delete/${id}`),
 };
