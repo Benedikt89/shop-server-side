@@ -5,7 +5,7 @@ import {I_authActions, LOGOUT_USER_SUCCESS, SET_USER_DATA} from "./actions";
 let initialState: I_authState = {
     userData: {
         id: null,
-        email: null,
+        phone: null,
         firstName: null,
         lastName: null,
         birth_date: null,
@@ -13,8 +13,6 @@ let initialState: I_authState = {
         isAdmin: null,
         createdAt: null,
         updated: null,
-        tokenDeathTime: null,
-        rememberMe: null,
     },
     events: [
         {

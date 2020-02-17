@@ -13,7 +13,7 @@ router.get('/auth-me', checkAuthUser, async (req: Request, res: Response, next: 
         return res.status(200).json({
             message: 'Auth Successful',
             userInfo: {
-                userName: res.locals.userFound.email,
+                phone: res.locals.userFound.phone,
                 id: res.locals.userFound.id
             }
         })
@@ -48,9 +48,9 @@ router.delete('/logout', (req: Request, res: Response, next: NextFunction) => {
 router.post(`/register`, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.body;
-        let userFind = await usersRepository.getUser(user.email);
-        // @ts-ignore
-        if (!userFind.length >= 1) {
+        let userFind = await usersRepository.getUser(user.phone);
+
+        if (!userFind.length) {
             const newUser = await usersRepository.addUser(user);
             console.log(newUser);
             return res.json({
@@ -69,7 +69,7 @@ router.post(`/register`, async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-router.put('/', checkAuthToken,
+router.put('/edit', checkAuthToken,
     async (req: Request, res: Response) => {
         try {
             let newUserInfo = req.body;
@@ -84,8 +84,8 @@ router.put('/', checkAuthToken,
 router.delete('/:email', checkAuthToken,
     async (req: Request, res: Response) => {
         try {
-            const userEmail = req.params.email;
-            let founded = await usersRepository.getUserInfo(userEmail);
+            const userPhone = req.params.phone;
+            let founded = await usersRepository.getUserInfo(userPhone);
 
             if (founded.photo !== 'no Photo') {
                 fs.unlink(rootPath + `${founded.photo}`, (err) => {
@@ -94,7 +94,7 @@ router.delete('/:email', checkAuthToken,
                     console.log(`${founded.photo} was deleted`);
                 });
             }
-            usersRepository.deleteUser(userEmail);
+            usersRepository.deleteUser(userPhone);
 
             return res.status(204).send(founded)
         } catch (err) {
@@ -102,7 +102,7 @@ router.delete('/:email', checkAuthToken,
         }
     });
 
-router.put('/edit', checkAuthToken, upload.single('image'),
+router.put('/edit22', checkAuthToken, upload.single('image'),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             //checking file

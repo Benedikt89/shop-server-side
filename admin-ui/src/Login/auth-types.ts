@@ -1,3 +1,5 @@
+import {I_authToFrontUserData} from "../../../core/users-types";
+
 export interface I_loginData {
     phone: string,
     password: string
@@ -14,16 +16,14 @@ export type I_eventType = 'AUTH_FETCHING' | 'AUTH_ERROR' | 'LOGIN_ERROR' | 'REGI
 
 export interface I_authUserData {
     id: string | null,
-    email: string | null,
+    phone: string | null,
     firstName: string | null,
     lastName: string | null,
     birth_date: Date | null,
     photo: string | null,
     isAdmin: boolean | null,
     createdAt: Date | null,
-    updated: Date | null,
-    tokenDeathTime: number | null,
-    rememberMe: boolean | null,
+    updated: Date | null
 }
 
 export interface I_authState {

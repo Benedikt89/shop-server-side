@@ -1,5 +1,5 @@
 export interface I_loginData {
-    email: string,
+    phone: string,
     password: string
 }
 
@@ -15,7 +15,7 @@ export interface I_userFullInfoData extends I_loginData{
 }
 export interface I_authMongooseUserData {
     id: string,
-    email: string,
+    phone: string,
     firstName: string | null,
     lastName: string | null,
     birth_date: Date | null,

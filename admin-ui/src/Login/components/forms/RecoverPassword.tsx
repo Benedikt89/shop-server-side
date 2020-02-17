@@ -37,12 +37,7 @@ const ReacoverForm:React.FC = ({initialPhone, message, onSubmit}: any) => {
         >
             {({
                   handleSubmit,
-                  handleChange,
-                  handleBlur,
                   values,
-                  touched,
-                  isValid,
-                  errors,
                   isSubmitting
               }) => (
                 <Form noValidate onSubmit={handleSubmit}>

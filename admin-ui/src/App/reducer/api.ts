@@ -9,9 +9,9 @@ const instance = axios.create({
 export let responseType: any;
 
 export const authAPI = {
-    loginUser(email: string, password: string, rememberMe: boolean)  {
+    loginUser(phone: string, password: string, rememberMe: boolean)  {
         return instance
-            .post(`/login`,{email, password, rememberMe })
+            .post(`/login`,{phone, password, rememberMe })
             .then((response: any) => {
                 responseType = typeof response
                 return response

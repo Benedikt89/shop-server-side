@@ -6,15 +6,15 @@ import {NextFunction, Request, Response} from "express";
 const checkAuthUser = async (req:Request, res: Response, next: NextFunction) => {
     try {
         const user = req.body;
-        let userFound = await usersRepository.getUser(user.email);
+        let userFound = await usersRepository.getUser(user.phone);
         if (userFound.length < 1)
             return res.status(401).json({
-                message: 'email or password not correct'
+                message: 'phone or password not correct'
             });
         const compared = await bcrypt.compare(user.password, userFound[0].password);
         if (!compared) {
             return res.status(401).json({
-                message: 'email or password not correct'
+                message: 'phone or password not correct'
             });
         }
         if (compared) {
@@ -22,7 +22,7 @@ const checkAuthUser = async (req:Request, res: Response, next: NextFunction) => 
             req.session.user_id = userFound[0].id;
 
             const token = jwt.sign({
-                    email: userFound[0].email,
+                    phone: userFound[0].phone,
                     userId: userFound[0].id
                 },
                 // @ts-ignore

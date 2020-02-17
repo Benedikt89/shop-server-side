@@ -10,9 +10,9 @@ interface I_props {
 
 function Header({alert, isAuth, logOut}: I_props) {
     return (
-        <Navbar bg="primary" expand="lg" variant="dark" >
+        <Navbar bg="primary" expand="lg" variant="dark">
             <Navbar.Brand href="/products">Address Book App</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link href="/orders">Orders</Nav.Link>
@@ -20,12 +20,14 @@ function Header({alert, isAuth, logOut}: I_props) {
                 <Nav className="mr-auto">
                     <Nav.Link href="/products">products</Nav.Link>
                 </Nav>
-                <Nav className="mr-auto">
-                    <Nav.Link href="/login">login</Nav.Link>
-                </Nav>
-                <Nav className="mr-auto">
-                    <Nav.Link onClick={logOut}>logOut</Nav.Link>
-                </Nav>
+                {
+                    isAuth ? <Nav className="mr-auto">
+                            <Nav.Link href="/login">login</Nav.Link>
+                        </Nav> :
+                        <Nav className="mr-auto">
+                            <Nav.Link onClick={logOut}>logOut</Nav.Link>
+                        </Nav>
+                }
             </Navbar.Collapse>
         </Navbar>
     );

@@ -17,6 +17,7 @@ import {getIsAuth} from "../Login/reducer/selectors";
 import {logOut} from "../Login/reducer/actions";
 import OrdersPage from "../Orders/Components/OrdersPage";
 import {createBrowserHistory as createHistory} from 'history'
+import RegisterPage from "../Login/components/Register";
 
 const history = createHistory();
 const ErrorMessageWithErrorBoundary =
@@ -54,10 +55,10 @@ class Main extends Component<I_MainProps> {
     }
 
     render() {
-        let {appError, isFetching} = this.props;
+        let {appError, isFetching, logOut, isAuth} = this.props;
         return (
-            <div>
-                <Header alert={appError} isAuth={this.props.isAuth} logOut={this.props.logOut}/>
+            <div className="container">
+                <Header alert={appError} isAuth={isAuth} logOut={logOut}/>
                 <div className={style.mainWrapper}>
                     {isFetching ?
                         <Preloader/>
@@ -66,6 +67,7 @@ class Main extends Component<I_MainProps> {
                             <Route exact path="/"
                                    render={() => <Redirect to={"/orders"}/>}/>
                             <Route path="/login" render={() => <LoginPage/>}/>
+                            <Route path="/register" render={() => <RegisterPage/>}/>
                             <Route path="/orders" render={() => <OrdersPage/>}/>
                             <Route path="/profile" render={() =>
                                 <ErrorMessageWithErrorBoundary>

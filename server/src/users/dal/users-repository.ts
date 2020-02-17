@@ -7,15 +7,7 @@ import {ENV_URL} from "../../config";
 export const usersRepository = {
     async addUser(user: I_userFullInfoData): Promise<I_authMongooseUserData | never> {
         try {
-            const newUser = await new User({
-                email: user.email,
-                password: user.password,
-                photo: user.photo,
-                birth_date: user.birth_date,
-                createdAt: Date.now(),
-                firstName: user.firstName,
-                lastName: user.lastName,
-            }).save();
+            const newUser = await new User(user).save();
             return new Promise(((resolve, reject) => resolve
             (newUser.getFullDataToSend())))
         } catch (err) {
@@ -23,9 +15,9 @@ export const usersRepository = {
             throw err;
         }
     },
-    async getUserInfo(userEmail: string): Promise<I_authMongooseUserData | never>  {
+    async getUserInfo(userPhone: string): Promise<I_authMongooseUserData | never>  {
         try {
-            let doc = await User.find({email: userEmail});
+            let doc = await User.find({phone: userPhone});
             return new Promise((resolve, reject) => {
                 resolve(doc[0].getFullDataToSend())
             })
@@ -35,8 +27,8 @@ export const usersRepository = {
         }
     },
 
-    getUser(userEmail: string): DocumentQuery<I_mongooseUserModel[], I_mongooseUserModel> & {} {
-        return User.find({ email: userEmail });
+    getUser(userPhone: string): DocumentQuery<I_mongooseUserModel[], I_mongooseUserModel> & {} {
+        return User.find({ phone: userPhone });
     },
 
     async updateUser(newUserInfo: I_userFullInfoData): Promise<I_userFullInfoData> {

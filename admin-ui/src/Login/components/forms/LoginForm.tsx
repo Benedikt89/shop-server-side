@@ -17,24 +17,20 @@ const SignupSchema = yup.object({
         .required('Password is required'),
 });
 
-interface OtherProps {
-    message: string;
-}
-
-interface MyFormProps {
+interface I_commonProps {
     initialPhone?: string;
     message: string;
     onSubmit: (data: I_loginData) => void
 }
 
-const LoginForm:React.FC = ({initialPhone, message, onSubmit}: any) => {
+const LoginForm:React.FC<I_commonProps> = ({initialPhone, message, onSubmit}: I_commonProps) => {
 
     const asd = async (evt: any) => {
         const isValid = await SignupSchema.validate(evt);
         if (!isValid) {
             return;
         }
-        onSubmit()
+        onSubmit(evt);
     };
 
     return (
@@ -52,7 +48,7 @@ const LoginForm:React.FC = ({initialPhone, message, onSubmit}: any) => {
                   isSubmitting
               }) => (
                 <Form noValidate onSubmit={handleSubmit}>
-                    <h1>{'message'}</h1>
+                    <h1>{message}</h1>
                     <Field
                         label={'phone'}
                         name={'phone'}

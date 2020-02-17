@@ -9,14 +9,12 @@ import LoginForm from "./forms/LoginForm";
 const LoginPage: React.FC = ({loginUserThunk}: any) => {
 
     const onSubmit = (data: I_loginData) => {
-        console.log(data);
         loginUserThunk(data)
     };
 
     return (
-        <div className="container w-25">
-            <h2>Authorization page</h2>
-            <LoginForm />
+        <div className="col-md-5">
+            <LoginForm onSubmit={onSubmit} message={'Authorization page'}/>
             <Link to={"/forgotPassword"}>
                 <div className="container">
                     Forgot your password?

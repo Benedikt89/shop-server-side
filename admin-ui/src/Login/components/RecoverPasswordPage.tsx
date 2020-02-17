@@ -10,7 +10,7 @@ const mapStateToProps = (state: any) => {
 
 const RecoverPassword = ({recoverPassword}: any) => {
     const onSubmit = (dataForm: any) => {
-        let message = recoverPassword(dataForm.email);
+        let message = recoverPassword(dataForm.phone);
         alert(dataForm)
     }
     return <RecoverPassword onSubmit={onSubmit}/>

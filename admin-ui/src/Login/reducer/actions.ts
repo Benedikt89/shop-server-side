@@ -26,19 +26,19 @@ interface I_logoutUserSuccessAC {
 
 //ACTIONS CREATORS
 export const _setAuthUserData = (payload: I_authUserData): I_userSessionDataAC => ({type: SET_USER_DATA, payload});
-export const logOut = (): I_logoutUserSuccessAC => ({type: LOGOUT_USER_SUCCESS});
+export const logOutSuccess = (): I_logoutUserSuccessAC => ({type: LOGOUT_USER_SUCCESS});
 
 
 //EXTERNAL ACTIONS
 export const loginUserThunk = (data: I_loginData) =>
     async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
         try {
-            let response: I_authToFrontUserData = await authAPI.loginUser(data);
-            dispatch(_setAuthUserData(response));
+            let res: I_authToFrontUserData = await authAPI.loginUser(data);
+            dispatch(_setAuthUserData(res));
         } catch (err) {
             console.log(JSON.parse(JSON.stringify(err)));
             //if its no data return
-            if (err.response.status === 403 || err.response.status === 401) {
+            if (err.res && (err.res.status === 403 || err.res.status === 401)) {
                 dispatch(_toggleIsFetching(false));
                 dispatch(_setError(null));
             } else {
@@ -47,16 +47,31 @@ export const loginUserThunk = (data: I_loginData) =>
             }
         }
     };
-
-export const recoverPassword = (email: string) =>
+export const registerUser = (data: I_loginData) =>
+    async (dispatch: ThunkDispatch<{}, {}, AppActionsType>) => {
+        try {
+            let res: I_authToFrontUserData = await authAPI.registerUser(data);
+            dispatch(_setAuthUserData(res));
+        } catch (err) {
+            console.log(JSON.parse(JSON.stringify(err)));
+        }
+    };
+export const recoverPassword = (phone: string) =>
     async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
         try {
-        debugger
-            let result = await authAPI.recoverPassword(email);
+            let result = await authAPI.recoverPassword(phone);
         debugger
             return result
         } catch (err) {
-        debugger
+            console.log("recoverPassword error - " + err)
+        }
+    };
+export const logOut = () =>
+    async (dispatch: ThunkDispatch<{}, {}, AppActionsType>, getState: GetStateType) => {
+        try {
+            let result = await authAPI.logOut();
+            dispatch(logOutSuccess())
+        } catch (err) {
             console.log("recoverPassword error - " + err)
         }
     };
