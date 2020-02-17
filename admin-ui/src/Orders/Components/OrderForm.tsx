@@ -3,10 +3,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import * as yup from 'yup';
 import {COUNTRIES} from '../reducer/exports';
-import {withFormik, FormikProps, FormikErrors, InjectedFormikProps} from 'formik';
+import {withFormik, FormikProps, FormikErrors, InjectedFormikProps, Field} from 'formik';
 import FormWrapper from "../../Common/FormWrapper";
 import {I_orderInternalItem} from "../../../../core/orders-types";
-import {CreateField} from "../../Common/CreateField";
 
 const TIMES = ['10-11', "11-12", "12-13", '13-14'];
 const PAYMENTS = ['cash', "card", "online"];
@@ -50,72 +49,69 @@ const InnerForm: React.SFC<InjectedFormikProps<I_formOutherProps, I_formValues>>
         <div className="form">
             <Form noValidate onSubmit={handleSubmit}>
                 <Form.Row>
-                    <CreateField
+                    <Field
                         label={"First Name"}
                         name={'first_name'}
-                        type={"text"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.first_name || ''}
                     />
-                    <CreateField
-                        label={"Phone"}
+                    <Field
+                        label={'Phone'}
                         name={'phone'}
-                        type={"text"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.phone || ''}
                     />
-                    <CreateField
+                    <Field
                         label={"Address"}
                         name={'address'}
-                        type={"text"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.address || ''}
                     />
-                    <CreateField
+                    <Field
                         label={"Checked"}
                         name={'checked'}
                         type={"checkbox"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.checked || ''}
                     />
                 </Form.Row>
                 <Form.Row>
-                    <CreateField
+                    <Field
                         label={"Delivery date"}
                         name={'delivery_date'}
-                        type={"text"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.delivery_date || ''}
                     />
-                    <FormWrapper name={'delivery_time'} error={errors.delivery_time} label={'Delivery Time'} key={"delivery_time"}>
-                        <Form.Control
-                            as="select"
-                            placeholder="Delivery Time"
-                            name="delivery_time"
-                            onChange={handleChange}
-                            value={values.delivery_time || ''}
-                            isInvalid={!!(touched.delivery_time && errors.delivery_time)}>
-                            {TIMES.map((t, i) => <option key={t} value={i}>{t}</option>)}
-                        </Form.Control>
-                    </FormWrapper>
-                    <CreateField
+                    <Field
+                        name="delivery_time"
+                        label={'Delivery Time'}
+                        as="select"
+                        value={values.delivery_time || ''}
+                        component={FormWrapper}
+                        {...TIMES.map((t, i) => <option key={t} value={i}>{t}</option>)}
+                    />
+                    <Field
                         label={"delivered"}
                         name={'delivered'}
                         type={"date"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.delivered || ''}
                     />
-                    <CreateField
+                    <Field
                         label={"Comment"}
                         name={'comment'}
-                        type={"text"}
-                        meta={meta}
+                        component={FormWrapper}
+                        value={values.comment || ''}
                     />
-                    <FormWrapper name={'payment'} error={errors.payment} label={'payment'} key={"payment"}>
-                        <Form.Control
-                            as="select"
-                            placeholder="payment"
-                            name="payment"
-                            onChange={handleChange}
-                            value={values.payment || ''}
-                            isInvalid={!!(touched.payment && errors.payment)}>
-                            {PAYMENTS.map((p, i) => <option key={p} value={i}>{p}</option>)}
-                        </Form.Control>
-                    </FormWrapper>
+                    <Field
+                        as="select"
+                        placeholder="payment"
+                        name="payment"
+                        label={'payment'}
+                        component={FormWrapper}
+                        value={values.payment || ''}
+                        {...PAYMENTS.map((p, i) => <option key={p} value={i}>{p}</option>)}
+                    />
                 </Form.Row>
                 <Button type="submit" style={{'marginRight': '10px'}}>Save</Button>
                 <Button type="button" onClick={onCancel}>Cancel</Button>
@@ -129,6 +125,7 @@ interface I_Props {
     addOrder: (values: I_orderInternalItem) => void,
     order: I_orderInternalItem,
 }
+
 interface I_formValues {
     first_name: string,
     phone: string,
@@ -140,6 +137,7 @@ interface I_formValues {
     checked: string,
     delivered: string,
 }
+
 type I_Allprops = I_Props & I_formOutherProps
 
 // Wrap our form with the withFormik HoC

@@ -10,13 +10,13 @@ const LoginPage: React.FC = ({loginUserThunk}: any) => {
 
     const onSubmit = (data: I_loginData) => {
         console.log(data);
-        loginUserThunk({email: data.phone, password: data.password, rememberMe: false})
+        loginUserThunk(data)
     };
 
     return (
         <div className="container w-25">
             <h2>Authorization page</h2>
-            <LoginForm onSubmit={onSubmit} message={'LOGIN'}/>
+            <LoginForm />
             <Link to={"/forgotPassword"}>
                 <div className="container">
                     Forgot your password?
